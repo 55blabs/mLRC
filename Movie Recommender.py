@@ -1,9 +1,3 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[29]:
-
-
 import numpy as np
 import pandas as pd
 from surprise import Dataset, Reader
@@ -13,18 +7,15 @@ import matplotlib.pyplot as plt
 from collections import defaultdict
 
 
-# In[18]:
-
-
 # Load the dataset
 data = Dataset.load_builtin('ml-100k')
 
 #Define Format type
+#Add your own File & Path
 reader = Reader(line_format='user item rating timestamp', sep='\t')
-data = Dataset.load_from_file('Users/michaelamcnair/Desktop/ml-100k/u.data', reader=reader)
+data = Dataset.load_from_file('/ml-100k/u.data', reader=reader)
 
 
-# In[7]:
 
 
 # Split the dataset for 5-fold cross-validation
@@ -32,27 +23,23 @@ from surprise.model_selection import train_test_split
 trainset, testset = train_test_split(data, test_size=0.25)
 
 
-# In[10]:
 
 
 # Use KNNBasic algorithm
 algo = KNNBasic()
 
 
-# In[11]:
 
 
 algo.fit(trainset)
 
 
-# In[13]:
 
 
 from surprise import SVD, Dataset, accuracy
 from surprise.model_selection import train_test_split, cross_validate
 
 
-# In[14]:
 
 
 # Run 5-fold cross-validation and print results
@@ -63,13 +50,11 @@ predictions = algo.test(testset)
 accuracy.rmse(predictions)
 
 
-# In[20]:
 
 
 from collections import defaultdict
 
 
-# In[25]:
 
 
 def get_top_n(predictions, n=10):
@@ -92,13 +77,11 @@ top_n = get_top_n(predictions, n=10)
 # Now you can print or analyze the recommended items for each user
 
 
-# In[26]:
 
 
 print(top_n)
 
 
-# In[27]:
 
 
 for uid, user_ratings in top_n.items():
@@ -107,7 +90,6 @@ for uid, user_ratings in top_n.items():
         print(f"\tItem {iid} with estimated rating of {rating:.2f}")
 
 
-# In[31]:
 
 
 user_id = '1'  # Adjust based on your dataset
@@ -116,7 +98,7 @@ top_n = get_top_n(predictions, n=10)
 # Extract item IDs and their estimated ratings for the user
 items, ratings = zip(*top_n[user_id])
 
-# Plotting
+# Plotting with matplotlib
 plt.figure(figsize=(10, 6))
 plt.barh(items, ratings, color='green')
 plt.xlabel('Estimated Rating')
@@ -126,7 +108,6 @@ plt.gca().invert_yaxis()  # Invert y-axis to have the highest rating at the top
 plt.show()
 
 
-# In[ ]:
 
 
 
